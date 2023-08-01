@@ -29,11 +29,40 @@ Red Hat OpenShift Administration II: Operating a Production Kubernetes Cluster
     1. `networkpolicy` control pod to pod and namespace to namespace allowed traffic (think firewall)
     1. using the tls protocol to encrypt traffic between pods for allowed networkpolicies (think encryption)
     1. `oc set volumes`
-1. Expose non-HTTP/SNI Applications    
-1. Enable Developer Self-Service      
-1. Manage Kubernetes Operators      
-1. Application Security      
-1. OpenShift Updates      
+1. Expose non-HTTP/SNI Applications
+    1. there are a few ways to do this
+        1. external loadbalancer with metallb
+        1. multus secondary networks
+        1. node port (not recommend)
+1. Enable Developer Self-Service  
+    1. LimitRanges (workload defaults in a ns)
+    1. ResourceQuota (upper/lower bounds for workloads in ns)
+    1. ClusterResourceQuota (limits across groups of ns)
+    1. Templates and Self-Provisioner (defaults permissions, ResourceQuotas, LimitRanges on new ns)
+1. Manage Kubernetes Operators 
+    1. Search the catalog for the cluster
+    1. Describe the packagemanifest
+    1. Create a namespace for the operator, or set to openshift-operators
+    1. Create an operatorgroup to confine the operator to a namespace
+    1. Create a subscription to define the installation     
+1. Application Security
+    1. Allowing more privileges to a deployment
+        1. create a serviceaccount
+        1. create a rolebinding for scc on the serviceaccount
+        1. attach serviceaccount to the deployment
+    1. Allowing access to another namespace
+1. OpenShift Updates     
+    1. We have 4 channels for clusters (X.Y.Z) zstream 
+        1. stable - updates and RH tested (prod)
+        1. fast - updates to minor versions 4.12.1 and 4.12.2 (dev, qa, prod)
+        1. candidate - all the latest features (dev/pre-prod)
+        1. EUS - 
+
+## Vertical Pod Autoscaler (VPA)
+- dynamically scale resource requests and limits
+- if a certain threshold is met it grows how much an application can group
+- it doesn't increase pod replicas, it allows the pod to use more resources
+- terminating and not terminating resources 
 
 # Resources:
 1. [Which do you choose (template, kustomize, and helm)](https://learn.redhat.com/t5/Containers-DevOps-OpenShift/Helm-chart-Templates-or-Kustomization-file/m-p/22321/highlight/true#M1293)
